@@ -1,0 +1,115 @@
+#!/bin/bash
+#
+
+cd /
+
+while :
+do
+
+# GameMode notification
+function notify_gamemode() {
+	lang=$(grep -r LANG $HOME/.config/plasma-localerc)
+
+	if [[ $lang == *"pt_BR"* ]]; then
+  	  	echo "pt_BR"
+  	  	notify-send -i applications-games -u normal -a 'Regata OS Game Access' "GameMode: ativado!" "O modo de jogo foi ativado para o Regata OS."
+
+	elif [[ $lang == *"pt_PT"* ]]; then
+   	 	echo "pt_PT"
+   	 	notify-send -i applications-games -u normal -a 'Regata OS Game Access' "GameMode: ativado!" "O modo de jogo foi ativado para o Regata OS."
+
+	elif [[ $lang == *"en_US"* ]]; then
+    	echo "en_US"
+    	notify-send -i applications-games -u normal -a 'Regata OS Game Access' "GameMode: activated!" "Game mode has been activated for Regata OS."
+
+	else
+    	notify-send -i applications-games -u normal -a 'Regata OS Game Access' "GameMode: activated!" "Game mode has been activated for Regata OS."
+
+	fi
+}
+
+# Fix directory "/tmp/apps-scripts"
+if test ! -e /tmp/apps-scripts ; then
+  mkdir -p /tmp/apps-scripts
+  chmod 777 /tmp/apps-scripts
+else
+  chmod 777 /tmp/apps-scripts
+fi
+
+# Check GameMode
+function check_gamemode() {
+gamemode_run=$(gamemoded -s)
+if [[ $gamemode_run == *"inactive"* ]]; then
+	echo $gamemode_run
+	rm -f "/tmp/apps-scripts/gaming-mode-enabled.txt"
+elif [[ $gamemode_run == *"active"* ]]; then
+	if test -e /tmp/apps-scripts/gaming-mode-enabled.txt ; then
+		echo $gamemode_run
+	else
+		echo $gamemode_run
+		notify_gamemode
+		echo "Gaming Mode: enabled" > /tmp/apps-scripts/gaming-mode-enabled.txt
+	fi
+else
+	echo $gamemode_run
+	rm -f "/tmp/apps-scripts/gaming-mode-enabled.txt"
+fi
+}
+
+# Run notify
+ps -C steam > /dev/null
+if [ $? = 0 ]
+then
+	check_gamemode
+fi
+
+ps -C LeagueClient.ex > /dev/null
+if [ $? = 0 ]
+then
+	check_gamemode
+fi
+
+ps -C Battle.net.exe > /dev/null
+if [ $? = 0 ]
+then
+	check_gamemode
+fi
+
+ps -C Origin.exe > /dev/null
+if [ $? = 0 ]
+then
+	check_gamemode
+fi
+
+ps -C EpicGamesLaunch > /dev/null
+if [ $? = 0 ]
+then
+	check_gamemode
+fi
+
+ps -C Uplay.exe > /dev/null
+if [ $? = 0 ]
+then
+	check_gamemode
+fi
+
+ps -C upc.exe > /dev/null
+if [ $? = 0 ]
+then
+	check_gamemode
+fi
+
+ps -C GalaxyClient.ex > /dev/null
+if [ $? = 0 ]
+then
+	check_gamemode
+fi
+
+ps -C SocialClubHelpe > /dev/null
+if [ $? = 0 ]
+then
+	check_gamemode
+fi
+
+   sleep 5
+done

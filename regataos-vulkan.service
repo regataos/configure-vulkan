@@ -1,0 +1,9 @@
+[Unit]
+Description=Service to automatically update on boot
+Before=display-manager.service
+
+[Service]
+ExecStart=/bin/sh /usr/bin/regataos-vulkan.sh
+
+[Install]
+WantedBy=graphical.target
